@@ -1,0 +1,2968 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+     \usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Vasiliev\_lab6}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Get thinkdsp.py}
+
+\PY{k+kn}{import} \PY{n+nn}{os}
+
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{thinkdsp.py}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+    \PY{err}{!}\PY{n}{wget} \PY{n}{https}\PY{p}{:}\PY{o}{/}\PY{o}{/}\PY{n}{github}\PY{o}{.}\PY{n}{com}\PY{o}{/}\PY{n}{AllenDowney}\PY{o}{/}\PY{n}{ThinkDSP}\PY{o}{/}\PY{n}{raw}\PY{o}{/}\PY{n}{master}\PY{o}{/}\PY{n}{code}\PY{o}{/}\PY{n}{thinkdsp}\PY{o}{.}\PY{n}{py}
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{thinkplot.py}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+  \PY{err}{!}\PY{n}{wget} \PY{n}{https}\PY{p}{:}\PY{o}{/}\PY{o}{/}\PY{n}{github}\PY{o}{.}\PY{n}{com}\PY{o}{/}\PY{n}{AllenDowney}\PY{o}{/}\PY{n}{ThinkDSP}\PY{o}{/}\PY{n}{raw}\PY{o}{/}\PY{n}{master}\PY{o}{/}\PY{n}{code}\PY{o}{/}\PY{n}{thinkplot}\PY{o}{.}\PY{n}{py}
+\PY{k+kn}{import} \PY{n+nn}{thinkplot}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--2022-04-14 10:04:39--
+https://github.com/AllenDowney/ThinkDSP/raw/master/code/thinkplot.py
+Resolving github.com (github.com){\ldots} 140.82.121.3
+Connecting to github.com (github.com)|140.82.121.3|:443{\ldots} connected.
+HTTP request sent, awaiting response{\ldots} 302 Found
+Location:
+https://raw.githubusercontent.com/AllenDowney/ThinkDSP/master/code/thinkplot.py
+[following]
+--2022-04-14 10:04:39--
+https://raw.githubusercontent.com/AllenDowney/ThinkDSP/master/code/thinkplot.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com){\ldots}
+185.199.108.133, 185.199.109.133, 185.199.110.133, {\ldots}
+Connecting to raw.githubusercontent.com
+(raw.githubusercontent.com)|185.199.108.133|:443{\ldots} connected.
+HTTP request sent, awaiting response{\ldots} 200 OK
+Length: 22756 (22K) [text/plain]
+Saving to: ‘thinkplot.py’
+
+thinkplot.py        100\%[===================>]  22.22K  --.-KB/s    in 0s
+
+2022-04-14 10:04:39 (89.9 MB/s) - ‘thinkplot.py’ saved [22756/22756]
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{k+kn}{from} \PY{n+nn}{thinkdsp} \PY{k+kn}{import} \PY{n}{decorate}
+\PY{k+kn}{import} \PY{n+nn}{warnings}
+\PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{fftpack}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\#Упражнение 1
+
+    Убедимся в том, что analyze1 требует времени пропорционально n\^{}3, a
+analyze1 пропорционально n\^{}2. Для этого будем запускать их с
+несколькими разными массивами и засекать время работы с помощью команды
+\%timeit. Для начала возьмем шумовой сигнал и массив со степенями двойки
+от 6 до 13
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{thinkdsp} \PY{k+kn}{import} \PY{n}{UncorrelatedGaussianNoise}
+
+\PY{n}{signal} \PY{o}{=} \PY{n}{UncorrelatedGaussianNoise}\PY{p}{(}\PY{p}{)}
+\PY{n}{noise} \PY{o}{=} \PY{n}{signal}\PY{o}{.}\PY{n}{make\PYZus{}wave}\PY{p}{(}\PY{n}{duration}\PY{o}{=}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{n}{framerate}\PY{o}{=}\PY{l+m+mi}{8192}\PY{p}{)}
+\PY{n}{noise}\PY{o}{.}\PY{n}{ys}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(8192,)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ns} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*}\PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{13}\PY{p}{)}
+\PY{n}{ns}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([  64,  128,  256,  512, 1024, 2048, 4096])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    plot\_bests берет массив результата из эксперемента, строит графики.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}bests}\PY{p}{(}\PY{n}{bests}\PY{p}{)}\PY{p}{:}
+  \PY{n}{thinkplot}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{ns}\PY{p}{,} \PY{n}{bests}\PY{p}{)}
+  \PY{n}{thinkplot}\PY{o}{.}\PY{n}{config}\PY{p}{(}\PY{n}{xscale}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{yscale}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{legend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+  \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{ns}\PY{p}{)}
+  \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{bests}\PY{p}{)}
+  \PY{n}{t} \PY{o}{=} \PY{n}{scipy}\PY{o}{.}\PY{n}{stats}\PY{o}{.}\PY{n}{linregress}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+  \PY{n}{slope} \PY{o}{=} \PY{n}{t}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+  \PY{k}{return} \PY{n}{slope}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Результаты для analyze1.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{PI2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{l+m+mi}{2}
+
+\PY{k}{def} \PY{n+nf}{analyze1}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n}{fs}\PY{p}{,} \PY{n}{ts}\PY{p}{)}\PY{p}{:}
+    \PY{n}{args} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{outer}\PY{p}{(}\PY{n}{ts}\PY{p}{,} \PY{n}{fs}\PY{p}{)}
+    \PY{n}{M} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{PI2} \PY{o}{*} \PY{n}{args}\PY{p}{)}
+    \PY{n}{amps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{M}\PY{p}{,} \PY{n}{ys}\PY{p}{)}
+    \PY{k}{return} \PY{n}{amps}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{N} \PY{o+ow}{in} \PY{n}{ns}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{N}\PY{p}{)}
+  \PY{n}{ts} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.5} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{n}{N}
+  \PY{n}{freqs} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.5} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+  \PY{n}{ys} \PY{o}{=} \PY{n}{noise}\PY{o}{.}\PY{n}{ys}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+  \PY{n}{result} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{n}{timeit} \PY{o}{\PYZhy{}}\PY{n}{r1} \PY{o}{\PYZhy{}}\PY{n}{o} \PY{n}{analyze1}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{ts}\PY{p}{)}
+  \PY{n}{results}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{result}\PY{p}{)}
+
+\PY{n}{bests} \PY{o}{=} \PY{p}{[}\PY{n}{result}\PY{o}{.}\PY{n}{best} \PY{k}{for} \PY{n}{result} \PY{o+ow}{in} \PY{n}{results}\PY{p}{]}
+\PY{n}{plot\PYZus{}bests}\PY{p}{(}\PY{n}{bests}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+64
+1000 loops, best of 1: 214 µs per loop
+128
+1000 loops, best of 1: 817 µs per loop
+256
+100 loops, best of 1: 6.68 ms per loop
+512
+10 loops, best of 1: 20.2 ms per loop
+1024
+10 loops, best of 1: 74.3 ms per loop
+2048
+1 loop, best of 1: 553 ms per loop
+4096
+1 loop, best of 1: 3.61 s per loop
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+2.3003052570221043
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Vasiliev_lab6_files/Vasiliev_lab6_11_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Как говорится в пособии и chap06starter расчетный уклон ближе к степени
+двойки, чем тройки. Производительность np.linalg.solve почти квадратична
+в этом диапозоне размеров массива. К сожеланию, из-за малой мощности
+рабочей машины, не удалось протестировать analyze1 со заничением 16384
+Из графика видно, что линия в конце чуть-чуть изогнута, что говорит о
+том, что размер массива не достигнут, где analyze1 показывает рост
+пропорцио- нально n3. Из этого можно сделать вывод, что при больших
+размерах массива, рост analyze1 будет пропорционален n\^{}3. Проведем
+такой же эксперимент для analyze2
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{analyze2}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n}{fs}\PY{p}{,} \PY{n}{ts}\PY{p}{)}\PY{p}{:}
+    \PY{n}{args} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{outer}\PY{p}{(}\PY{n}{ts}\PY{p}{,} \PY{n}{fs}\PY{p}{)}
+    \PY{n}{M} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{PI2} \PY{o}{*} \PY{n}{args}\PY{p}{)}
+    \PY{n}{amps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{M}\PY{p}{,} \PY{n}{ys}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+    \PY{k}{return} \PY{n}{amps}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bests2} \PY{o}{=} \PY{n}{run\PYZus{}speed\PYZus{}test}\PY{p}{(}\PY{n}{ns}\PY{p}{,} \PY{n}{analyze2}\PY{p}{)}
+\PY{n}{plot\PYZus{}bests}\PY{p}{(}\PY{n}{bests2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+64
+1 loop, best of 1: 3.65 s per loop
+128
+1 loop, best of 1: 3.6 s per loop
+256
+1 loop, best of 1: 3.55 s per loop
+512
+1 loop, best of 1: 3.63 s per loop
+1024
+1 loop, best of 1: 3.61 s per loop
+2048
+1 loop, best of 1: 3.63 s per loop
+4096
+1 loop, best of 1: 3.57 s per loop
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+-0.0016495303647609926
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Vasiliev_lab6_files/Vasiliev_lab6_14_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Как видно из графика, analyze2 растет пропорционально n\^{}2. Проведем
+такой же эксперимент scipy.fftpack.dct.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{fftpack}
+
+\PY{k}{def} \PY{n+nf}{scipy\PYZus{}dct}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{ts}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{scipy}\PY{o}{.}\PY{n}{fftpack}\PY{o}{.}\PY{n}{dct}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n+nb}{type}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{N} \PY{o+ow}{in} \PY{n}{ns}\PY{p}{:}
+  \PY{n}{ys} \PY{o}{=} \PY{n}{noise}\PY{o}{.}\PY{n}{ys}\PY{p}{[}\PY{p}{:}\PY{n}{N}\PY{p}{]}
+  \PY{n}{result} \PY{o}{=} \PY{o}{\PYZpc{}}\PY{n}{timeit} \PY{o}{\PYZhy{}}\PY{n}{o} \PY{n}{scipy}\PY{o}{.}\PY{n}{fftpack}\PY{o}{.}\PY{n}{dct}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n+nb}{type}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+  \PY{n}{results}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{result}\PY{p}{)}
+\PY{n}{bests3} \PY{o}{=} \PY{p}{[}\PY{n}{result}\PY{o}{.}\PY{n}{best} \PY{k}{for} \PY{n}{result} \PY{o+ow}{in} \PY{n}{results}\PY{p}{]}
+\PY{n}{plot\PYZus{}bests}\PY{p}{(}\PY{n}{bests3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The slowest run took 101.97 times longer than the fastest. This could mean that
+an intermediate result is being cached.
+100000 loops, best of 5: 5.65 µs per loop
+The slowest run took 12.14 times longer than the fastest. This could mean that
+an intermediate result is being cached.
+100000 loops, best of 5: 6 µs per loop
+The slowest run took 8.50 times longer than the fastest. This could mean that an
+intermediate result is being cached.
+100000 loops, best of 5: 6.61 µs per loop
+The slowest run took 9.85 times longer than the fastest. This could mean that an
+intermediate result is being cached.
+100000 loops, best of 5: 8.15 µs per loop
+The slowest run took 7.49 times longer than the fastest. This could mean that an
+intermediate result is being cached.
+100000 loops, best of 5: 11.3 µs per loop
+The slowest run took 14.34 times longer than the fastest. This could mean that
+an intermediate result is being cached.
+100000 loops, best of 5: 17.9 µs per loop
+The slowest run took 7.75 times longer than the fastest. This could mean that an
+intermediate result is being cached.
+10000 loops, best of 5: 34.2 µs per loop
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.4187415051533611
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Vasiliev_lab6_files/Vasiliev_lab6_17_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    dct реализация намного быстрее, она пропорциональна n log n, но на
+графике этого не видно.
+
+    \hypertarget{ux443ux43fux440ux430ux436ux43dux435ux43dux438ux435-2}{%
+\subsection{Упражнение
+2}\label{ux443ux43fux440ux430ux436ux43dux435ux43dux438ux435-2}}
+
+    В этом задании нужно реализовать алгоритм ДКП для сжатия звука и
+изображений. В качестве сжимаемого файла возьмем страшный звук трубы.
+Выделим из него короткий сегмент.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{447951\PYZus{}\PYZus{}nowherestudios\PYZus{}\PYZus{}saxophone\PYZhy{}2\PYZhy{}tenor\PYZhy{}unprocessed.wav}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+    \PY{err}{!}\PY{n}{wget} \PY{n}{https}\PY{p}{:}\PY{o}{/}\PY{o}{/}\PY{n}{github}\PY{o}{.}\PY{n}{com}\PY{o}{/}\PY{n}{vasilievan}\PY{o}{/}\PY{n}{telecom\PYZus{}labs}\PY{o}{/}\PY{n}{raw}\PY{o}{/}\PY{n}{main}\PY{o}{/}\PY{l+m+mi}{447951}\PY{n}{\PYZus{}\PYZus{}nowherestudios\PYZus{}\PYZus{}saxophone}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{n}{tenor}\PY{o}{\PYZhy{}}\PY{n}{unprocessed}\PY{o}{.}\PY{n}{wav}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--2022-04-14 10:13:55--  https://github.com/vasilievan/telecom\_labs/raw/main/447
+951\_\_nowherestudios\_\_saxophone-2-tenor-unprocessed.wav
+Resolving github.com (github.com){\ldots} 140.82.121.3
+Connecting to github.com (github.com)|140.82.121.3|:443{\ldots} connected.
+HTTP request sent, awaiting response{\ldots} 302 Found
+Location: https://raw.githubusercontent.com/vasilievan/telecom\_labs/main/447951\_
+\_nowherestudios\_\_saxophone-2-tenor-unprocessed.wav [following]
+--2022-04-14 10:13:56--  https://raw.githubusercontent.com/vasilievan/telecom\_la
+bs/main/447951\_\_nowherestudios\_\_saxophone-2-tenor-unprocessed.wav
+Resolving raw.githubusercontent.com (raw.githubusercontent.com){\ldots}
+185.199.111.133, 185.199.108.133, 185.199.109.133, {\ldots}
+Connecting to raw.githubusercontent.com
+(raw.githubusercontent.com)|185.199.111.133|:443{\ldots} connected.
+HTTP request sent, awaiting response{\ldots} 200 OK
+Length: 6350304 (6.1M) [application/octet-stream]
+Saving to: ‘447951\_\_nowherestudios\_\_saxophone-2-tenor-unprocessed.wav’
+
+447951\_\_nowherestud 100\%[===================>]   6.06M  --.-KB/s    in 0.03s
+
+2022-04-14 10:13:56 (179 MB/s) - ‘447951\_\_nowherestudios\_\_saxophone-2-tenor-
+unprocessed.wav’ saved [6350304/6350304]
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{thinkdsp} \PY{k+kn}{import} \PY{n}{read\PYZus{}wave}
+
+\PY{n}{wave} \PY{o}{=} \PY{n}{read\PYZus{}wave}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{447951\PYZus{}\PYZus{}nowherestudios\PYZus{}\PYZus{}saxophone\PYZhy{}2\PYZhy{}tenor\PYZhy{}unprocessed.wav}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{wave}\PY{o}{.}\PY{n}{make\PYZus{}audio}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<IPython.lib.display.Audio object>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{segment} \PY{o}{=} \PY{n}{wave}\PY{o}{.}\PY{n}{segment}\PY{p}{(}\PY{n}{start}\PY{o}{=}\PY{l+m+mf}{1.2}\PY{p}{,} \PY{n}{duration}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+\PY{n}{segment}\PY{o}{.}\PY{n}{normalize}\PY{p}{(}\PY{p}{)}
+\PY{n}{segment}\PY{o}{.}\PY{n}{make\PYZus{}audio}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<IPython.lib.display.Audio object>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    DCT график для полученного сегмента:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{seg\PYZus{}dct} \PY{o}{=} \PY{n}{segment}\PY{o}{.}\PY{n}{make\PYZus{}dct}\PY{p}{(}\PY{p}{)}
+\PY{n}{seg\PYZus{}dct}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{high}\PY{o}{=}\PY{l+m+mi}{4000}\PY{p}{)}
+\PY{n}{decorate}\PY{p}{(}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency (Hz)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DCT}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Vasiliev_lab6_files/Vasiliev_lab6_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Из графика видно, что есть немного частот с большой амплитудой.
+Следующая функция compress берет DCT и режет элемент, которые ниже
+аргумента thresh.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{compress}\PY{p}{(}\PY{n}{dct}\PY{p}{,} \PY{n}{thresh}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{n}{count} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{amp} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{dct}\PY{o}{.}\PY{n}{amps}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{amp}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{thresh}\PY{p}{:}
+            \PY{n}{dct}\PY{o}{.}\PY{n}{hs}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{n}{count} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dct}\PY{o}{.}\PY{n}{amps}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{count}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{l+m+mi}{100} \PY{o}{*} \PY{n}{count} \PY{o}{/} \PY{n}{n}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Применим функцию для нашего сегмента:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{seg\PYZus{}dct} \PY{o}{=} \PY{n}{segment}\PY{o}{.}\PY{n}{make\PYZus{}dct}\PY{p}{(}\PY{p}{)}
+\PY{n}{compress}\PY{p}{(}\PY{n}{seg\PYZus{}dct}\PY{p}{,} \PY{n}{thresh}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{seg\PYZus{}dct}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{high}\PY{o}{=}\PY{l+m+mi}{4000}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+42206   48000   87.92916666666666
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Vasiliev_lab6_files/Vasiliev_lab6_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{seg2} \PY{o}{=} \PY{n}{seg\PYZus{}dct}\PY{o}{.}\PY{n}{make\PYZus{}wave}\PY{p}{(}\PY{p}{)}
+\PY{n}{seg2}\PY{o}{.}\PY{n}{make\PYZus{}audio}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<IPython.lib.display.Audio object>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{thinkdsp} \PY{k+kn}{import} \PY{n}{Spectrogram}
+
+\PY{k}{def} \PY{n+nf}{make\PYZus{}dct\PYZus{}spectrogram}\PY{p}{(}\PY{n}{wave}\PY{p}{,} \PY{n}{seg\PYZus{}length}\PY{p}{)}\PY{p}{:}
+    \PY{n}{window} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{hamming}\PY{p}{(}\PY{n}{seg\PYZus{}length}\PY{p}{)}
+    \PY{n}{i}\PY{p}{,} \PY{n}{j} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{seg\PYZus{}length}
+    \PY{n}{step} \PY{o}{=} \PY{n}{seg\PYZus{}length} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2}
+
+    \PY{n}{spec\PYZus{}map} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+    \PY{k}{while} \PY{n}{j} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{wave}\PY{o}{.}\PY{n}{ys}\PY{p}{)}\PY{p}{:}
+        \PY{n}{segment} \PY{o}{=} \PY{n}{wave}\PY{o}{.}\PY{n}{slice}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{)}
+        \PY{n}{segment}\PY{o}{.}\PY{n}{window}\PY{p}{(}\PY{n}{window}\PY{p}{)}
+
+        \PY{n}{t} \PY{o}{=} \PY{p}{(}\PY{n}{segment}\PY{o}{.}\PY{n}{start} \PY{o}{+} \PY{n}{segment}\PY{o}{.}\PY{n}{end}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+        \PY{n}{spec\PYZus{}map}\PY{p}{[}\PY{n}{t}\PY{p}{]} \PY{o}{=} \PY{n}{segment}\PY{o}{.}\PY{n}{make\PYZus{}dct}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{n}{step}
+        \PY{n}{j} \PY{o}{+}\PY{o}{=} \PY{n}{step}
+
+    \PY{k}{return} \PY{n}{Spectrogram}\PY{p}{(}\PY{n}{spec\PYZus{}map}\PY{p}{,} \PY{n}{seg\PYZus{}length}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{spectro} \PY{o}{=} \PY{n}{make\PYZus{}dct\PYZus{}spectrogram}\PY{p}{(}\PY{n}{wave}\PY{p}{,} \PY{n}{seg\PYZus{}length}\PY{o}{=}\PY{l+m+mi}{1024}\PY{p}{)}
+\PY{k}{for} \PY{n}{t}\PY{p}{,} \PY{n}{dct} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{spectro}\PY{o}{.}\PY{n}{spec\PYZus{}map}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{compress}\PY{p}{(}\PY{n}{dct}\PY{p}{,} \PY{n}{thresh}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+943     1024    92.08984375
+923     1024    90.13671875
+958     1024    93.5546875
+907     1024    88.57421875
+919     1024    89.74609375
+941     1024    91.89453125
+916     1024    89.453125
+952     1024    92.96875
+900     1024    87.890625
+947     1024    92.48046875
+937     1024    91.50390625
+959     1024    93.65234375
+952     1024    92.96875
+925     1024    90.33203125
+896     1024    87.5
+870     1024    84.9609375
+883     1024    86.23046875
+944     1024    92.1875
+832     1024    81.25
+789     1024    77.05078125
+606     1024    59.1796875
+662     1024    64.6484375
+767     1024    74.90234375
+565     1024    55.17578125
+696     1024    67.96875
+462     1024    45.1171875
+510     1024    49.8046875
+446     1024    43.5546875
+444     1024    43.359375
+442     1024    43.1640625
+421     1024    41.11328125
+436     1024    42.578125
+434     1024    42.3828125
+464     1024    45.3125
+463     1024    45.21484375
+462     1024    45.1171875
+420     1024    41.015625
+484     1024    47.265625
+427     1024    41.69921875
+471     1024    45.99609375
+484     1024    47.265625
+433     1024    42.28515625
+470     1024    45.8984375
+470     1024    45.8984375
+432     1024    42.1875
+506     1024    49.4140625
+446     1024    43.5546875
+505     1024    49.31640625
+473     1024    46.19140625
+452     1024    44.140625
+496     1024    48.4375
+457     1024    44.62890625
+463     1024    45.21484375
+487     1024    47.55859375
+466     1024    45.5078125
+481     1024    46.97265625
+464     1024    45.3125
+466     1024    45.5078125
+515     1024    50.29296875
+450     1024    43.9453125
+473     1024    46.19140625
+522     1024    50.9765625
+455     1024    44.43359375
+503     1024    49.12109375
+479     1024    46.77734375
+465     1024    45.41015625
+526     1024    51.3671875
+455     1024    44.43359375
+444     1024    43.359375
+462     1024    45.1171875
+432     1024    42.1875
+500     1024    48.828125
+482     1024    47.0703125
+474     1024    46.2890625
+511     1024    49.90234375
+437     1024    42.67578125
+476     1024    46.484375
+492     1024    48.046875
+467     1024    45.60546875
+505     1024    49.31640625
+462     1024    45.1171875
+465     1024    45.41015625
+501     1024    48.92578125
+460     1024    44.921875
+482     1024    47.0703125
+474     1024    46.2890625
+448     1024    43.75
+501     1024    48.92578125
+447     1024    43.65234375
+464     1024    45.3125
+504     1024    49.21875
+461     1024    45.01953125
+482     1024    47.0703125
+498     1024    48.6328125
+444     1024    43.359375
+489     1024    47.75390625
+464     1024    45.3125
+456     1024    44.53125
+531     1024    51.85546875
+463     1024    45.21484375
+565     1024    55.17578125
+652     1024    63.671875
+703     1024    68.65234375
+734     1024    71.6796875
+757     1024    73.92578125
+660     1024    64.453125
+736     1024    71.875
+717     1024    70.01953125
+639     1024    62.40234375
+592     1024    57.8125
+509     1024    49.70703125
+479     1024    46.77734375
+474     1024    46.2890625
+456     1024    44.53125
+444     1024    43.359375
+435     1024    42.48046875
+440     1024    42.96875
+422     1024    41.2109375
+433     1024    42.28515625
+431     1024    42.08984375
+448     1024    43.75
+475     1024    46.38671875
+463     1024    45.21484375
+464     1024    45.3125
+459     1024    44.82421875
+464     1024    45.3125
+503     1024    49.12109375
+505     1024    49.31640625
+522     1024    50.9765625
+491     1024    47.94921875
+571     1024    55.76171875
+582     1024    56.8359375
+544     1024    53.125
+544     1024    53.125
+560     1024    54.6875
+560     1024    54.6875
+493     1024    48.14453125
+506     1024    49.4140625
+578     1024    56.4453125
+562     1024    54.8828125
+508     1024    49.609375
+509     1024    49.70703125
+592     1024    57.8125
+547     1024    53.41796875
+497     1024    48.53515625
+506     1024    49.4140625
+596     1024    58.203125
+549     1024    53.61328125
+515     1024    50.29296875
+558     1024    54.4921875
+616     1024    60.15625
+573     1024    55.95703125
+575     1024    56.15234375
+685     1024    66.89453125
+680     1024    66.40625
+594     1024    58.0078125
+595     1024    58.10546875
+579     1024    56.54296875
+526     1024    51.3671875
+507     1024    49.51171875
+469     1024    45.80078125
+481     1024    46.97265625
+463     1024    45.21484375
+422     1024    41.2109375
+438     1024    42.7734375
+441     1024    43.06640625
+441     1024    43.06640625
+433     1024    42.28515625
+429     1024    41.89453125
+411     1024    40.13671875
+449     1024    43.84765625
+440     1024    42.96875
+449     1024    43.84765625
+460     1024    44.921875
+454     1024    44.3359375
+436     1024    42.578125
+455     1024    44.43359375
+441     1024    43.06640625
+428     1024    41.796875
+456     1024    44.53125
+472     1024    46.09375
+475     1024    46.38671875
+558     1024    54.4921875
+665     1024    64.94140625
+606     1024    59.1796875
+524     1024    51.171875
+552     1024    53.90625
+525     1024    51.26953125
+538     1024    52.5390625
+508     1024    49.609375
+490     1024    47.8515625
+511     1024    49.90234375
+567     1024    55.37109375
+521     1024    50.87890625
+504     1024    49.21875
+498     1024    48.6328125
+523     1024    51.07421875
+546     1024    53.3203125
+504     1024    49.21875
+511     1024    49.90234375
+508     1024    49.609375
+547     1024    53.41796875
+517     1024    50.48828125
+524     1024    51.171875
+498     1024    48.6328125
+534     1024    52.1484375
+561     1024    54.78515625
+516     1024    50.390625
+486     1024    47.4609375
+504     1024    49.21875
+535     1024    52.24609375
+555     1024    54.19921875
+507     1024    49.51171875
+475     1024    46.38671875
+502     1024    49.0234375
+531     1024    51.85546875
+495     1024    48.33984375
+489     1024    47.75390625
+496     1024    48.4375
+559     1024    54.58984375
+497     1024    48.53515625
+496     1024    48.4375
+475     1024    46.38671875
+501     1024    48.92578125
+524     1024    51.171875
+498     1024    48.6328125
+488     1024    47.65625
+487     1024    47.55859375
+524     1024    51.171875
+523     1024    51.07421875
+502     1024    49.0234375
+472     1024    46.09375
+501     1024    48.92578125
+522     1024    50.9765625
+500     1024    48.828125
+478     1024    46.6796875
+489     1024    47.75390625
+506     1024    49.4140625
+527     1024    51.46484375
+493     1024    48.14453125
+479     1024    46.77734375
+492     1024    48.046875
+530     1024    51.7578125
+511     1024    49.90234375
+502     1024    49.0234375
+478     1024    46.6796875
+529     1024    51.66015625
+506     1024    49.4140625
+491     1024    47.94921875
+514     1024    50.1953125
+456     1024    44.53125
+505     1024    49.31640625
+530     1024    51.7578125
+501     1024    48.92578125
+487     1024    47.55859375
+488     1024    47.65625
+539     1024    52.63671875
+564     1024    55.078125
+530     1024    51.7578125
+535     1024    52.24609375
+560     1024    54.6875
+552     1024    53.90625
+548     1024    53.515625
+503     1024    49.12109375
+493     1024    48.14453125
+466     1024    45.5078125
+463     1024    45.21484375
+443     1024    43.26171875
+446     1024    43.5546875
+434     1024    42.3828125
+440     1024    42.96875
+420     1024    41.015625
+438     1024    42.7734375
+445     1024    43.45703125
+444     1024    43.359375
+425     1024    41.50390625
+424     1024    41.40625
+437     1024    42.67578125
+428     1024    41.796875
+462     1024    45.1171875
+442     1024    43.1640625
+446     1024    43.5546875
+449     1024    43.84765625
+449     1024    43.84765625
+437     1024    42.67578125
+449     1024    43.84765625
+472     1024    46.09375
+464     1024    45.3125
+458     1024    44.7265625
+486     1024    47.4609375
+538     1024    52.5390625
+594     1024    58.0078125
+714     1024    69.7265625
+760     1024    74.21875
+703     1024    68.65234375
+748     1024    73.046875
+625     1024    61.03515625
+634     1024    61.9140625
+633     1024    61.81640625
+540     1024    52.734375
+552     1024    53.90625
+600     1024    58.59375
+518     1024    50.5859375
+524     1024    51.171875
+555     1024    54.19921875
+557     1024    54.39453125
+494     1024    48.2421875
+571     1024    55.76171875
+537     1024    52.44140625
+485     1024    47.36328125
+546     1024    53.3203125
+552     1024    53.90625
+477     1024    46.58203125
+524     1024    51.171875
+565     1024    55.17578125
+538     1024    52.5390625
+497     1024    48.53515625
+545     1024    53.22265625
+531     1024    51.85546875
+498     1024    48.6328125
+554     1024    54.1015625
+521     1024    50.87890625
+487     1024    47.55859375
+530     1024    51.7578125
+571     1024    55.76171875
+480     1024    46.875
+501     1024    48.92578125
+550     1024    53.7109375
+503     1024    49.12109375
+477     1024    46.58203125
+569     1024    55.56640625
+509     1024    49.70703125
+491     1024    47.94921875
+549     1024    53.61328125
+526     1024    51.3671875
+486     1024    47.4609375
+541     1024    52.83203125
+562     1024    54.8828125
+486     1024    47.4609375
+505     1024    49.31640625
+558     1024    54.4921875
+507     1024    49.51171875
+486     1024    47.4609375
+553     1024    54.00390625
+543     1024    53.02734375
+503     1024    49.12109375
+517     1024    50.48828125
+563     1024    54.98046875
+501     1024    48.92578125
+497     1024    48.53515625
+550     1024    53.7109375
+527     1024    51.46484375
+491     1024    47.94921875
+552     1024    53.90625
+538     1024    52.5390625
+517     1024    50.48828125
+528     1024    51.5625
+549     1024    53.61328125
+494     1024    48.2421875
+488     1024    47.65625
+579     1024    56.54296875
+517     1024    50.48828125
+513     1024    50.09765625
+558     1024    54.4921875
+542     1024    52.9296875
+478     1024    46.6796875
+519     1024    50.68359375
+546     1024    53.3203125
+491     1024    47.94921875
+473     1024    46.19140625
+566     1024    55.2734375
+515     1024    50.29296875
+483     1024    47.16796875
+549     1024    53.61328125
+544     1024    53.125
+507     1024    49.51171875
+509     1024    49.70703125
+569     1024    55.56640625
+511     1024    49.90234375
+481     1024    46.97265625
+552     1024    53.90625
+534     1024    52.1484375
+515     1024    50.29296875
+560     1024    54.6875
+578     1024    56.4453125
+505     1024    49.31640625
+534     1024    52.1484375
+619     1024    60.44921875
+617     1024    60.25390625
+697     1024    68.06640625
+728     1024    71.09375
+763     1024    74.51171875
+656     1024    64.0625
+562     1024    54.8828125
+525     1024    51.26953125
+494     1024    48.2421875
+453     1024    44.23828125
+454     1024    44.3359375
+464     1024    45.3125
+462     1024    45.1171875
+456     1024    44.53125
+486     1024    47.4609375
+452     1024    44.140625
+413     1024    40.33203125
+444     1024    43.359375
+437     1024    42.67578125
+424     1024    41.40625
+427     1024    41.69921875
+435     1024    42.48046875
+452     1024    44.140625
+447     1024    43.65234375
+443     1024    43.26171875
+444     1024    43.359375
+441     1024    43.06640625
+455     1024    44.43359375
+480     1024    46.875
+487     1024    47.55859375
+460     1024    44.921875
+488     1024    47.65625
+505     1024    49.31640625
+570     1024    55.6640625
+561     1024    54.78515625
+524     1024    51.171875
+481     1024    46.97265625
+503     1024    49.12109375
+568     1024    55.46875
+590     1024    57.6171875
+539     1024    52.63671875
+493     1024    48.14453125
+515     1024    50.29296875
+553     1024    54.00390625
+557     1024    54.39453125
+540     1024    52.734375
+491     1024    47.94921875
+528     1024    51.5625
+553     1024    54.00390625
+540     1024    52.734375
+467     1024    45.60546875
+507     1024    49.51171875
+569     1024    55.56640625
+575     1024    56.15234375
+528     1024    51.5625
+549     1024    53.61328125
+590     1024    57.6171875
+631     1024    61.62109375
+614     1024    59.9609375
+691     1024    67.48046875
+611     1024    59.66796875
+584     1024    57.03125
+576     1024    56.25
+494     1024    48.2421875
+480     1024    46.875
+434     1024    42.3828125
+430     1024    41.9921875
+430     1024    41.9921875
+439     1024    42.87109375
+416     1024    40.625
+432     1024    42.1875
+455     1024    44.43359375
+441     1024    43.06640625
+466     1024    45.5078125
+460     1024    44.921875
+446     1024    43.5546875
+482     1024    47.0703125
+450     1024    43.9453125
+452     1024    44.140625
+471     1024    45.99609375
+446     1024    43.5546875
+451     1024    44.04296875
+497     1024    48.53515625
+494     1024    48.2421875
+497     1024    48.53515625
+554     1024    54.1015625
+554     1024    54.1015625
+545     1024    53.22265625
+514     1024    50.1953125
+503     1024    49.12109375
+500     1024    48.828125
+505     1024    49.31640625
+504     1024    49.21875
+506     1024    49.4140625
+495     1024    48.33984375
+547     1024    53.41796875
+528     1024    51.5625
+502     1024    49.0234375
+521     1024    50.87890625
+496     1024    48.4375
+520     1024    50.78125
+503     1024    49.12109375
+526     1024    51.3671875
+510     1024    49.8046875
+484     1024    47.265625
+537     1024    52.44140625
+500     1024    48.828125
+487     1024    47.55859375
+509     1024    49.70703125
+516     1024    50.390625
+523     1024    51.07421875
+521     1024    50.87890625
+507     1024    49.51171875
+495     1024    48.33984375
+496     1024    48.4375
+486     1024    47.4609375
+482     1024    47.0703125
+512     1024    50.0
+501     1024    48.92578125
+525     1024    51.26953125
+514     1024    50.1953125
+508     1024    49.609375
+499     1024    48.73046875
+509     1024    49.70703125
+505     1024    49.31640625
+495     1024    48.33984375
+504     1024    49.21875
+492     1024    48.046875
+526     1024    51.3671875
+534     1024    52.1484375
+499     1024    48.73046875
+528     1024    51.5625
+506     1024    49.4140625
+482     1024    47.0703125
+472     1024    46.09375
+484     1024    47.265625
+476     1024    46.484375
+515     1024    50.29296875
+511     1024    49.90234375
+504     1024    49.21875
+531     1024    51.85546875
+483     1024    47.16796875
+505     1024    49.31640625
+515     1024    50.29296875
+541     1024    52.83203125
+563     1024    54.98046875
+534     1024    52.1484375
+519     1024    50.68359375
+538     1024    52.5390625
+504     1024    49.21875
+487     1024    47.55859375
+500     1024    48.828125
+492     1024    48.046875
+541     1024    52.83203125
+530     1024    51.7578125
+507     1024    49.51171875
+527     1024    51.46484375
+490     1024    47.8515625
+480     1024    46.875
+468     1024    45.703125
+486     1024    47.4609375
+517     1024    50.48828125
+510     1024    49.8046875
+540     1024    52.734375
+520     1024    50.78125
+546     1024    53.3203125
+525     1024    51.26953125
+516     1024    50.390625
+498     1024    48.6328125
+513     1024    50.09765625
+530     1024    51.7578125
+557     1024    54.39453125
+552     1024    53.90625
+520     1024    50.78125
+537     1024    52.44140625
+536     1024    52.34375
+512     1024    50.0
+527     1024    51.46484375
+547     1024    53.41796875
+536     1024    52.34375
+542     1024    52.9296875
+563     1024    54.98046875
+544     1024    53.125
+531     1024    51.85546875
+535     1024    52.24609375
+532     1024    51.953125
+547     1024    53.41796875
+515     1024    50.29296875
+553     1024    54.00390625
+574     1024    56.0546875
+575     1024    56.15234375
+581     1024    56.73828125
+544     1024    53.125
+580     1024    56.640625
+649     1024    63.37890625
+744     1024    72.65625
+791     1024    77.24609375
+794     1024    77.5390625
+802     1024    78.3203125
+803     1024    78.41796875
+823     1024    80.37109375
+835     1024    81.54296875
+841     1024    82.12890625
+827     1024    80.76171875
+824     1024    80.46875
+838     1024    81.8359375
+871     1024    85.05859375
+880     1024    85.9375
+895     1024    87.40234375
+903     1024    88.18359375
+910     1024    88.8671875
+887     1024    86.62109375
+888     1024    86.71875
+904     1024    88.28125
+913     1024    89.16015625
+903     1024    88.18359375
+935     1024    91.30859375
+972     1024    94.921875
+973     1024    95.01953125
+961     1024    93.84765625
+961     1024    93.84765625
+948     1024    92.578125
+916     1024    89.453125
+906     1024    88.4765625
+893     1024    87.20703125
+908     1024    88.671875
+948     1024    92.578125
+947     1024    92.48046875
+941     1024    91.89453125
+965     1024    94.23828125
+945     1024    92.28515625
+942     1024    91.9921875
+956     1024    93.359375
+865     1024    84.47265625
+908     1024    88.671875
+870     1024    84.9609375
+776     1024    75.78125
+841     1024    82.12890625
+890     1024    86.9140625
+879     1024    85.83984375
+897     1024    87.59765625
+918     1024    89.6484375
+879     1024    85.83984375
+887     1024    86.62109375
+850     1024    83.0078125
+858     1024    83.7890625
+866     1024    84.5703125
+872     1024    85.15625
+898     1024    87.6953125
+886     1024    86.5234375
+906     1024    88.4765625
+909     1024    88.76953125
+846     1024    82.6171875
+890     1024    86.9140625
+875     1024    85.44921875
+827     1024    80.76171875
+883     1024    86.23046875
+872     1024    85.15625
+841     1024    82.12890625
+873     1024    85.25390625
+837     1024    81.73828125
+878     1024    85.7421875
+839     1024    81.93359375
+811     1024    79.19921875
+779     1024    76.07421875
+824     1024    80.46875
+814     1024    79.4921875
+786     1024    76.7578125
+775     1024    75.68359375
+745     1024    72.75390625
+765     1024    74.70703125
+785     1024    76.66015625
+783     1024    76.46484375
+832     1024    81.25
+853     1024    83.30078125
+828     1024    80.859375
+813     1024    79.39453125
+827     1024    80.76171875
+801     1024    78.22265625
+809     1024    79.00390625
+842     1024    82.2265625
+826     1024    80.6640625
+757     1024    73.92578125
+859     1024    83.88671875
+875     1024    85.44921875
+894     1024    87.3046875
+790     1024    77.1484375
+869     1024    84.86328125
+917     1024    89.55078125
+935     1024    91.30859375
+926     1024    90.4296875
+909     1024    88.76953125
+917     1024    89.55078125
+899     1024    87.79296875
+875     1024    85.44921875
+924     1024    90.234375
+944     1024    92.1875
+938     1024    91.6015625
+923     1024    90.13671875
+903     1024    88.18359375
+796     1024    77.734375
+819     1024    79.98046875
+874     1024    85.3515625
+852     1024    83.203125
+804     1024    78.515625
+724     1024    70.703125
+777     1024    75.87890625
+697     1024    68.06640625
+620     1024    60.546875
+510     1024    49.8046875
+460     1024    44.921875
+437     1024    42.67578125
+459     1024    44.82421875
+477     1024    46.58203125
+507     1024    49.51171875
+471     1024    45.99609375
+458     1024    44.7265625
+471     1024    45.99609375
+481     1024    46.97265625
+470     1024    45.8984375
+486     1024    47.4609375
+472     1024    46.09375
+487     1024    47.55859375
+476     1024    46.484375
+462     1024    45.1171875
+493     1024    48.14453125
+458     1024    44.7265625
+459     1024    44.82421875
+460     1024    44.921875
+510     1024    49.8046875
+564     1024    55.078125
+546     1024    53.3203125
+490     1024    47.8515625
+498     1024    48.6328125
+451     1024    44.04296875
+458     1024    44.7265625
+477     1024    46.58203125
+490     1024    47.8515625
+449     1024    43.84765625
+443     1024    43.26171875
+458     1024    44.7265625
+469     1024    45.80078125
+467     1024    45.60546875
+468     1024    45.703125
+469     1024    45.80078125
+467     1024    45.60546875
+467     1024    45.60546875
+472     1024    46.09375
+487     1024    47.55859375
+472     1024    46.09375
+492     1024    48.046875
+477     1024    46.58203125
+498     1024    48.6328125
+508     1024    49.609375
+601     1024    58.69140625
+568     1024    55.46875
+637     1024    62.20703125
+635     1024    62.01171875
+537     1024    52.44140625
+544     1024    53.125
+525     1024    51.26953125
+582     1024    56.8359375
+536     1024    52.34375
+526     1024    51.3671875
+516     1024    50.390625
+543     1024    53.02734375
+537     1024    52.44140625
+536     1024    52.34375
+487     1024    47.55859375
+516     1024    50.390625
+523     1024    51.07421875
+538     1024    52.5390625
+512     1024    50.0
+478     1024    46.6796875
+501     1024    48.92578125
+563     1024    54.98046875
+559     1024    54.58984375
+572     1024    55.859375
+560     1024    54.6875
+575     1024    56.15234375
+587     1024    57.32421875
+634     1024    61.9140625
+582     1024    56.8359375
+576     1024    56.25
+505     1024    49.31640625
+517     1024    50.48828125
+485     1024    47.36328125
+488     1024    47.65625
+458     1024    44.7265625
+463     1024    45.21484375
+454     1024    44.3359375
+449     1024    43.84765625
+455     1024    44.43359375
+430     1024    41.9921875
+465     1024    45.41015625
+471     1024    45.99609375
+465     1024    45.41015625
+487     1024    47.55859375
+476     1024    46.484375
+516     1024    50.390625
+492     1024    48.046875
+483     1024    47.16796875
+496     1024    48.4375
+495     1024    48.33984375
+597     1024    58.30078125
+665     1024    64.94140625
+736     1024    71.875
+572     1024    55.859375
+604     1024    58.984375
+617     1024    60.25390625
+506     1024    49.4140625
+546     1024    53.3203125
+612     1024    59.765625
+529     1024    51.66015625
+526     1024    51.3671875
+570     1024    55.6640625
+542     1024    52.9296875
+524     1024    51.171875
+547     1024    53.41796875
+563     1024    54.98046875
+517     1024    50.48828125
+531     1024    51.85546875
+595     1024    58.10546875
+531     1024    51.85546875
+530     1024    51.7578125
+606     1024    59.1796875
+523     1024    51.07421875
+485     1024    47.36328125
+570     1024    55.6640625
+525     1024    51.26953125
+507     1024    49.51171875
+544     1024    53.125
+556     1024    54.296875
+491     1024    47.94921875
+511     1024    49.90234375
+588     1024    57.421875
+538     1024    52.5390625
+554     1024    54.1015625
+571     1024    55.76171875
+578     1024    56.4453125
+517     1024    50.48828125
+468     1024    45.703125
+519     1024    50.68359375
+551     1024    53.80859375
+515     1024    50.29296875
+485     1024    47.36328125
+506     1024    49.4140625
+534     1024    52.1484375
+500     1024    48.828125
+479     1024    46.77734375
+521     1024    50.87890625
+529     1024    51.66015625
+470     1024    45.8984375
+516     1024    50.390625
+531     1024    51.85546875
+537     1024    52.44140625
+510     1024    49.8046875
+528     1024    51.5625
+555     1024    54.19921875
+512     1024    50.0
+508     1024    49.609375
+524     1024    51.171875
+551     1024    53.80859375
+529     1024    51.66015625
+508     1024    49.609375
+514     1024    50.1953125
+553     1024    54.00390625
+490     1024    47.8515625
+508     1024    49.609375
+568     1024    55.46875
+567     1024    55.37109375
+511     1024    49.90234375
+504     1024    49.21875
+544     1024    53.125
+553     1024    54.00390625
+488     1024    47.65625
+477     1024    46.58203125
+552     1024    53.90625
+559     1024    54.58984375
+472     1024    46.09375
+532     1024    51.953125
+581     1024    56.73828125
+546     1024    53.3203125
+503     1024    49.12109375
+525     1024    51.26953125
+573     1024    55.95703125
+541     1024    52.83203125
+494     1024    48.2421875
+556     1024    54.296875
+562     1024    54.8828125
+524     1024    51.171875
+518     1024    50.5859375
+547     1024    53.41796875
+546     1024    53.3203125
+528     1024    51.5625
+516     1024    50.390625
+566     1024    55.2734375
+545     1024    53.22265625
+473     1024    46.19140625
+516     1024    50.390625
+571     1024    55.76171875
+532     1024    51.953125
+487     1024    47.55859375
+517     1024    50.48828125
+594     1024    58.0078125
+534     1024    52.1484375
+500     1024    48.828125
+540     1024    52.734375
+570     1024    55.6640625
+515     1024    50.29296875
+478     1024    46.6796875
+556     1024    54.296875
+556     1024    54.296875
+508     1024    49.609375
+495     1024    48.33984375
+556     1024    54.296875
+539     1024    52.63671875
+467     1024    45.60546875
+493     1024    48.14453125
+584     1024    57.03125
+546     1024    53.3203125
+554     1024    54.1015625
+572     1024    55.859375
+638     1024    62.3046875
+649     1024    63.37890625
+666     1024    65.0390625
+633     1024    61.81640625
+571     1024    55.76171875
+566     1024    55.2734375
+591     1024    57.71484375
+567     1024    55.37109375
+571     1024    55.76171875
+547     1024    53.41796875
+502     1024    49.0234375
+496     1024    48.4375
+484     1024    47.265625
+466     1024    45.5078125
+491     1024    47.94921875
+489     1024    47.75390625
+454     1024    44.3359375
+445     1024    43.45703125
+486     1024    47.4609375
+466     1024    45.5078125
+425     1024    41.50390625
+468     1024    45.703125
+477     1024    46.58203125
+464     1024    45.3125
+447     1024    43.65234375
+470     1024    45.8984375
+473     1024    46.19140625
+495     1024    48.33984375
+477     1024    46.58203125
+473     1024    46.19140625
+492     1024    48.046875
+444     1024    43.359375
+475     1024    46.38671875
+467     1024    45.60546875
+459     1024    44.82421875
+442     1024    43.1640625
+434     1024    42.3828125
+466     1024    45.5078125
+466     1024    45.5078125
+527     1024    51.46484375
+540     1024    52.734375
+559     1024    54.58984375
+555     1024    54.19921875
+523     1024    51.07421875
+502     1024    49.0234375
+494     1024    48.2421875
+520     1024    50.78125
+504     1024    49.21875
+536     1024    52.34375
+522     1024    50.9765625
+535     1024    52.24609375
+515     1024    50.29296875
+532     1024    51.953125
+500     1024    48.828125
+496     1024    48.4375
+496     1024    48.4375
+520     1024    50.78125
+530     1024    51.7578125
+522     1024    50.9765625
+542     1024    52.9296875
+513     1024    50.09765625
+508     1024    49.609375
+505     1024    49.31640625
+507     1024    49.51171875
+548     1024    53.515625
+589     1024    57.51953125
+608     1024    59.375
+553     1024    54.00390625
+513     1024    50.09765625
+513     1024    50.09765625
+455     1024    44.43359375
+465     1024    45.41015625
+458     1024    44.7265625
+477     1024    46.58203125
+465     1024    45.41015625
+436     1024    42.578125
+455     1024    44.43359375
+457     1024    44.62890625
+455     1024    44.43359375
+494     1024    48.2421875
+469     1024    45.80078125
+445     1024    43.45703125
+458     1024    44.7265625
+436     1024    42.578125
+441     1024    43.06640625
+442     1024    43.1640625
+458     1024    44.7265625
+452     1024    44.140625
+447     1024    43.65234375
+446     1024    43.5546875
+484     1024    47.265625
+453     1024    44.23828125
+454     1024    44.3359375
+444     1024    43.359375
+456     1024    44.53125
+469     1024    45.80078125
+460     1024    44.921875
+474     1024    46.2890625
+432     1024    42.1875
+464     1024    45.3125
+405     1024    39.55078125
+466     1024    45.5078125
+459     1024    44.82421875
+441     1024    43.06640625
+458     1024    44.7265625
+456     1024    44.53125
+482     1024    47.0703125
+454     1024    44.3359375
+482     1024    47.0703125
+454     1024    44.3359375
+448     1024    43.75
+445     1024    43.45703125
+463     1024    45.21484375
+455     1024    44.43359375
+453     1024    44.23828125
+451     1024    44.04296875
+454     1024    44.3359375
+440     1024    42.96875
+444     1024    43.359375
+442     1024    43.1640625
+474     1024    46.2890625
+474     1024    46.2890625
+453     1024    44.23828125
+475     1024    46.38671875
+445     1024    43.45703125
+462     1024    45.1171875
+485     1024    47.36328125
+475     1024    46.38671875
+440     1024    42.96875
+438     1024    42.7734375
+447     1024    43.65234375
+433     1024    42.28515625
+437     1024    42.67578125
+428     1024    41.796875
+429     1024    41.89453125
+419     1024    40.91796875
+426     1024    41.6015625
+459     1024    44.82421875
+447     1024    43.65234375
+455     1024    44.43359375
+475     1024    46.38671875
+459     1024    44.82421875
+447     1024    43.65234375
+461     1024    45.01953125
+441     1024    43.06640625
+483     1024    47.16796875
+482     1024    47.0703125
+459     1024    44.82421875
+486     1024    47.4609375
+457     1024    44.62890625
+466     1024    45.5078125
+460     1024    44.921875
+486     1024    47.4609375
+454     1024    44.3359375
+462     1024    45.1171875
+451     1024    44.04296875
+472     1024    46.09375
+490     1024    47.8515625
+537     1024    52.44140625
+593     1024    57.91015625
+555     1024    54.19921875
+610     1024    59.5703125
+617     1024    60.25390625
+582     1024    56.8359375
+547     1024    53.41796875
+543     1024    53.02734375
+588     1024    57.421875
+587     1024    57.32421875
+557     1024    54.39453125
+558     1024    54.4921875
+538     1024    52.5390625
+571     1024    55.76171875
+571     1024    55.76171875
+535     1024    52.24609375
+521     1024    50.87890625
+553     1024    54.00390625
+596     1024    58.203125
+580     1024    56.640625
+526     1024    51.3671875
+519     1024    50.68359375
+606     1024    59.1796875
+667     1024    65.13671875
+734     1024    71.6796875
+745     1024    72.75390625
+724     1024    70.703125
+665     1024    64.94140625
+605     1024    59.08203125
+530     1024    51.7578125
+499     1024    48.73046875
+489     1024    47.75390625
+462     1024    45.1171875
+452     1024    44.140625
+473     1024    46.19140625
+424     1024    41.40625
+465     1024    45.41015625
+452     1024    44.140625
+433     1024    42.28515625
+446     1024    43.5546875
+450     1024    43.9453125
+438     1024    42.7734375
+443     1024    43.26171875
+434     1024    42.3828125
+440     1024    42.96875
+463     1024    45.21484375
+434     1024    42.3828125
+471     1024    45.99609375
+469     1024    45.80078125
+448     1024    43.75
+463     1024    45.21484375
+495     1024    48.33984375
+555     1024    54.19921875
+537     1024    52.44140625
+552     1024    53.90625
+548     1024    53.515625
+497     1024    48.53515625
+510     1024    49.8046875
+491     1024    47.94921875
+472     1024    46.09375
+490     1024    47.8515625
+489     1024    47.75390625
+486     1024    47.4609375
+496     1024    48.4375
+460     1024    44.921875
+487     1024    47.55859375
+484     1024    47.265625
+456     1024    44.53125
+481     1024    46.97265625
+478     1024    46.6796875
+462     1024    45.1171875
+460     1024    44.921875
+461     1024    45.01953125
+462     1024    45.1171875
+459     1024    44.82421875
+473     1024    46.19140625
+490     1024    47.8515625
+445     1024    43.45703125
+498     1024    48.6328125
+453     1024    44.23828125
+475     1024    46.38671875
+501     1024    48.92578125
+456     1024    44.53125
+479     1024    46.77734375
+472     1024    46.09375
+475     1024    46.38671875
+443     1024    43.26171875
+464     1024    45.3125
+450     1024    43.9453125
+444     1024    43.359375
+473     1024    46.19140625
+489     1024    47.75390625
+457     1024    44.62890625
+462     1024    45.1171875
+473     1024    46.19140625
+472     1024    46.09375
+513     1024    50.09765625
+490     1024    47.8515625
+492     1024    48.046875
+479     1024    46.77734375
+459     1024    44.82421875
+471     1024    45.99609375
+446     1024    43.5546875
+476     1024    46.484375
+463     1024    45.21484375
+460     1024    44.921875
+471     1024    45.99609375
+481     1024    46.97265625
+451     1024    44.04296875
+489     1024    47.75390625
+481     1024    46.97265625
+489     1024    47.75390625
+483     1024    47.16796875
+467     1024    45.60546875
+475     1024    46.38671875
+464     1024    45.3125
+461     1024    45.01953125
+466     1024    45.5078125
+482     1024    47.0703125
+452     1024    44.140625
+466     1024    45.5078125
+472     1024    46.09375
+463     1024    45.21484375
+480     1024    46.875
+476     1024    46.484375
+496     1024    48.4375
+497     1024    48.53515625
+496     1024    48.4375
+455     1024    44.43359375
+465     1024    45.41015625
+478     1024    46.6796875
+470     1024    45.8984375
+469     1024    45.80078125
+474     1024    46.2890625
+467     1024    45.60546875
+469     1024    45.80078125
+454     1024    44.3359375
+465     1024    45.41015625
+476     1024    46.484375
+482     1024    47.0703125
+500     1024    48.828125
+484     1024    47.265625
+497     1024    48.53515625
+506     1024    49.4140625
+489     1024    47.75390625
+505     1024    49.31640625
+487     1024    47.55859375
+488     1024    47.65625
+455     1024    44.43359375
+456     1024    44.53125
+489     1024    47.75390625
+476     1024    46.484375
+461     1024    45.01953125
+466     1024    45.5078125
+474     1024    46.2890625
+472     1024    46.09375
+459     1024    44.82421875
+468     1024    45.703125
+491     1024    47.94921875
+484     1024    47.265625
+501     1024    48.92578125
+486     1024    47.4609375
+495     1024    48.33984375
+489     1024    47.75390625
+484     1024    47.265625
+556     1024    54.296875
+647     1024    63.18359375
+707     1024    69.04296875
+721     1024    70.41015625
+753     1024    73.53515625
+762     1024    74.4140625
+777     1024    75.87890625
+772     1024    75.390625
+791     1024    77.24609375
+835     1024    81.54296875
+832     1024    81.25
+870     1024    84.9609375
+883     1024    86.23046875
+890     1024    86.9140625
+886     1024    86.5234375
+922     1024    90.0390625
+886     1024    86.5234375
+894     1024    87.3046875
+923     1024    90.13671875
+914     1024    89.2578125
+910     1024    88.8671875
+917     1024    89.55078125
+874     1024    85.3515625
+832     1024    81.25
+913     1024    89.16015625
+910     1024    88.8671875
+939     1024    91.69921875
+967     1024    94.43359375
+980     1024    95.703125
+935     1024    91.30859375
+962     1024    93.9453125
+964     1024    94.140625
+961     1024    93.84765625
+963     1024    94.04296875
+962     1024    93.9453125
+929     1024    90.72265625
+924     1024    90.234375
+951     1024    92.87109375
+958     1024    93.5546875
+923     1024    90.13671875
+920     1024    89.84375
+929     1024    90.72265625
+929     1024    90.72265625
+925     1024    90.33203125
+945     1024    92.28515625
+903     1024    88.18359375
+884     1024    86.328125
+863     1024    84.27734375
+871     1024    85.05859375
+890     1024    86.9140625
+865     1024    84.47265625
+847     1024    82.71484375
+845     1024    82.51953125
+862     1024    84.1796875
+834     1024    81.4453125
+845     1024    82.51953125
+842     1024    82.2265625
+848     1024    82.8125
+841     1024    82.12890625
+870     1024    84.9609375
+876     1024    85.546875
+875     1024    85.44921875
+813     1024    79.39453125
+875     1024    85.44921875
+814     1024    79.4921875
+871     1024    85.05859375
+866     1024    84.5703125
+888     1024    86.71875
+867     1024    84.66796875
+866     1024    84.5703125
+861     1024    84.08203125
+819     1024    79.98046875
+874     1024    85.3515625
+874     1024    85.3515625
+859     1024    83.88671875
+879     1024    85.83984375
+844     1024    82.421875
+867     1024    84.66796875
+843     1024    82.32421875
+853     1024    83.30078125
+836     1024    81.640625
+837     1024    81.73828125
+822     1024    80.2734375
+817     1024    79.78515625
+854     1024    83.3984375
+844     1024    82.421875
+855     1024    83.49609375
+853     1024    83.30078125
+837     1024    81.73828125
+835     1024    81.54296875
+860     1024    83.984375
+844     1024    82.421875
+797     1024    77.83203125
+796     1024    77.734375
+789     1024    77.05078125
+842     1024    82.2265625
+811     1024    79.19921875
+825     1024    80.56640625
+847     1024    82.71484375
+820     1024    80.078125
+823     1024    80.37109375
+804     1024    78.515625
+812     1024    79.296875
+828     1024    80.859375
+894     1024    87.3046875
+927     1024    90.52734375
+944     1024    92.1875
+947     1024    92.48046875
+956     1024    93.359375
+967     1024    94.43359375
+946     1024    92.3828125
+921     1024    89.94140625
+872     1024    85.15625
+876     1024    85.546875
+956     1024    93.359375
+942     1024    91.9921875
+942     1024    91.9921875
+902     1024    88.0859375
+936     1024    91.40625
+919     1024    89.74609375
+866     1024    84.5703125
+876     1024    85.546875
+901     1024    87.98828125
+846     1024    82.6171875
+848     1024    82.8125
+885     1024    86.42578125
+880     1024    85.9375
+788     1024    76.953125
+810     1024    79.1015625
+744     1024    72.65625
+762     1024    74.4140625
+655     1024    63.96484375
+583     1024    56.93359375
+636     1024    62.109375
+560     1024    54.6875
+514     1024    50.1953125
+459     1024    44.82421875
+470     1024    45.8984375
+499     1024    48.73046875
+473     1024    46.19140625
+474     1024    46.2890625
+456     1024    44.53125
+484     1024    47.265625
+473     1024    46.19140625
+459     1024    44.82421875
+470     1024    45.8984375
+498     1024    48.6328125
+508     1024    49.609375
+524     1024    51.171875
+520     1024    50.78125
+526     1024    51.3671875
+566     1024    55.2734375
+593     1024    57.91015625
+595     1024    58.10546875
+684     1024    66.796875
+608     1024    59.375
+563     1024    54.98046875
+550     1024    53.7109375
+547     1024    53.41796875
+491     1024    47.94921875
+460     1024    44.921875
+463     1024    45.21484375
+464     1024    45.3125
+445     1024    43.45703125
+468     1024    45.703125
+478     1024    46.6796875
+454     1024    44.3359375
+472     1024    46.09375
+475     1024    46.38671875
+492     1024    48.046875
+491     1024    47.94921875
+450     1024    43.9453125
+473     1024    46.19140625
+473     1024    46.19140625
+478     1024    46.6796875
+465     1024    45.41015625
+509     1024    49.70703125
+505     1024    49.31640625
+584     1024    57.03125
+602     1024    58.7890625
+588     1024    57.421875
+560     1024    54.6875
+539     1024    52.63671875
+545     1024    53.22265625
+571     1024    55.76171875
+503     1024    49.12109375
+492     1024    48.046875
+502     1024    49.0234375
+514     1024    50.1953125
+565     1024    55.17578125
+527     1024    51.46484375
+499     1024    48.73046875
+480     1024    46.875
+526     1024    51.3671875
+519     1024    50.68359375
+494     1024    48.2421875
+540     1024    52.734375
+530     1024    51.7578125
+561     1024    54.78515625
+551     1024    53.80859375
+545     1024    53.22265625
+552     1024    53.90625
+554     1024    54.1015625
+576     1024    56.25
+568     1024    55.46875
+542     1024    52.9296875
+501     1024    48.92578125
+503     1024    49.12109375
+466     1024    45.5078125
+453     1024    44.23828125
+452     1024    44.140625
+476     1024    46.484375
+475     1024    46.38671875
+478     1024    46.6796875
+484     1024    47.265625
+470     1024    45.8984375
+465     1024    45.41015625
+487     1024    47.55859375
+483     1024    47.16796875
+464     1024    45.3125
+506     1024    49.4140625
+477     1024    46.58203125
+500     1024    48.828125
+492     1024    48.046875
+469     1024    45.80078125
+473     1024    46.19140625
+523     1024    51.07421875
+518     1024    50.5859375
+569     1024    55.56640625
+585     1024    57.12890625
+598     1024    58.3984375
+507     1024    49.51171875
+574     1024    56.0546875
+580     1024    56.640625
+526     1024    51.3671875
+529     1024    51.66015625
+507     1024    49.51171875
+564     1024    55.078125
+495     1024    48.33984375
+523     1024    51.07421875
+528     1024    51.5625
+545     1024    53.22265625
+529     1024    51.66015625
+497     1024    48.53515625
+510     1024    49.8046875
+559     1024    54.58984375
+517     1024    50.48828125
+531     1024    51.85546875
+575     1024    56.15234375
+597     1024    58.30078125
+511     1024    49.90234375
+500     1024    48.828125
+561     1024    54.78515625
+604     1024    58.984375
+528     1024    51.5625
+517     1024    50.48828125
+523     1024    51.07421875
+536     1024    52.34375
+557     1024    54.39453125
+542     1024    52.9296875
+499     1024    48.73046875
+537     1024    52.44140625
+579     1024    56.54296875
+560     1024    54.6875
+512     1024    50.0
+507     1024    49.51171875
+546     1024    53.3203125
+575     1024    56.15234375
+510     1024    49.8046875
+479     1024    46.77734375
+510     1024    49.8046875
+558     1024    54.4921875
+552     1024    53.90625
+494     1024    48.2421875
+511     1024    49.90234375
+538     1024    52.5390625
+557     1024    54.39453125
+534     1024    52.1484375
+517     1024    50.48828125
+532     1024    51.953125
+606     1024    59.1796875
+583     1024    56.93359375
+571     1024    55.76171875
+585     1024    57.12890625
+555     1024    54.19921875
+526     1024    51.3671875
+525     1024    51.26953125
+515     1024    50.29296875
+497     1024    48.53515625
+522     1024    50.9765625
+524     1024    51.171875
+500     1024    48.828125
+507     1024    49.51171875
+504     1024    49.21875
+517     1024    50.48828125
+500     1024    48.828125
+485     1024    47.36328125
+527     1024    51.46484375
+518     1024    50.5859375
+532     1024    51.953125
+553     1024    54.00390625
+583     1024    56.93359375
+591     1024    57.71484375
+564     1024    55.078125
+516     1024    50.390625
+512     1024    50.0
+495     1024    48.33984375
+433     1024    42.28515625
+443     1024    43.26171875
+423     1024    41.30859375
+455     1024    44.43359375
+402     1024    39.2578125
+438     1024    42.7734375
+446     1024    43.5546875
+436     1024    42.578125
+457     1024    44.62890625
+460     1024    44.921875
+446     1024    43.5546875
+437     1024    42.67578125
+455     1024    44.43359375
+437     1024    42.67578125
+453     1024    44.23828125
+434     1024    42.3828125
+439     1024    42.87109375
+437     1024    42.67578125
+435     1024    42.48046875
+437     1024    42.67578125
+429     1024    41.89453125
+461     1024    45.01953125
+433     1024    42.28515625
+451     1024    44.04296875
+453     1024    44.23828125
+504     1024    49.21875
+593     1024    57.91015625
+537     1024    52.44140625
+574     1024    56.0546875
+556     1024    54.296875
+546     1024    53.3203125
+543     1024    53.02734375
+546     1024    53.3203125
+512     1024    50.0
+540     1024    52.734375
+579     1024    56.54296875
+523     1024    51.07421875
+492     1024    48.046875
+536     1024    52.34375
+544     1024    53.125
+549     1024    53.61328125
+541     1024    52.83203125
+535     1024    52.24609375
+536     1024    52.34375
+552     1024    53.90625
+572     1024    55.859375
+509     1024    49.70703125
+522     1024    50.9765625
+560     1024    54.6875
+601     1024    58.69140625
+548     1024    53.515625
+690     1024    67.3828125
+738     1024    72.0703125
+722     1024    70.5078125
+713     1024    69.62890625
+667     1024    65.13671875
+638     1024    62.3046875
+560     1024    54.6875
+496     1024    48.4375
+493     1024    48.14453125
+483     1024    47.16796875
+475     1024    46.38671875
+460     1024    44.921875
+466     1024    45.5078125
+449     1024    43.84765625
+436     1024    42.578125
+427     1024    41.69921875
+446     1024    43.5546875
+437     1024    42.67578125
+460     1024    44.921875
+429     1024    41.89453125
+458     1024    44.7265625
+430     1024    41.9921875
+456     1024    44.53125
+471     1024    45.99609375
+431     1024    42.08984375
+434     1024    42.3828125
+420     1024    41.015625
+465     1024    45.41015625
+482     1024    47.0703125
+525     1024    51.26953125
+666     1024    65.0390625
+628     1024    61.328125
+590     1024    57.6171875
+515     1024    50.29296875
+528     1024    51.5625
+476     1024    46.484375
+453     1024    44.23828125
+493     1024    48.14453125
+492     1024    48.046875
+493     1024    48.14453125
+459     1024    44.82421875
+489     1024    47.75390625
+466     1024    45.5078125
+468     1024    45.703125
+485     1024    47.36328125
+473     1024    46.19140625
+465     1024    45.41015625
+469     1024    45.80078125
+461     1024    45.01953125
+469     1024    45.80078125
+439     1024    42.87109375
+450     1024    43.9453125
+456     1024    44.53125
+466     1024    45.5078125
+481     1024    46.97265625
+474     1024    46.2890625
+474     1024    46.2890625
+468     1024    45.703125
+502     1024    49.0234375
+462     1024    45.1171875
+441     1024    43.06640625
+451     1024    44.04296875
+462     1024    45.1171875
+439     1024    42.87109375
+460     1024    44.921875
+426     1024    41.6015625
+422     1024    41.2109375
+470     1024    45.8984375
+445     1024    43.45703125
+448     1024    43.75
+437     1024    42.67578125
+469     1024    45.80078125
+467     1024    45.60546875
+442     1024    43.1640625
+472     1024    46.09375
+479     1024    46.77734375
+456     1024    44.53125
+481     1024    46.97265625
+474     1024    46.2890625
+481     1024    46.97265625
+443     1024    43.26171875
+456     1024    44.53125
+458     1024    44.7265625
+460     1024    44.921875
+470     1024    45.8984375
+470     1024    45.8984375
+462     1024    45.1171875
+481     1024    46.97265625
+460     1024    44.921875
+473     1024    46.19140625
+468     1024    45.703125
+471     1024    45.99609375
+483     1024    47.16796875
+461     1024    45.01953125
+478     1024    46.6796875
+459     1024    44.82421875
+458     1024    44.7265625
+510     1024    49.8046875
+491     1024    47.94921875
+447     1024    43.65234375
+411     1024    40.13671875
+425     1024    41.50390625
+449     1024    43.84765625
+461     1024    45.01953125
+451     1024    44.04296875
+441     1024    43.06640625
+461     1024    45.01953125
+448     1024    43.75
+438     1024    42.7734375
+439     1024    42.87109375
+458     1024    44.7265625
+456     1024    44.53125
+456     1024    44.53125
+440     1024    42.96875
+456     1024    44.53125
+428     1024    41.796875
+440     1024    42.96875
+449     1024    43.84765625
+458     1024    44.7265625
+449     1024    43.84765625
+466     1024    45.5078125
+450     1024    43.9453125
+449     1024    43.84765625
+432     1024    42.1875
+446     1024    43.5546875
+473     1024    46.19140625
+433     1024    42.28515625
+440     1024    42.96875
+437     1024    42.67578125
+456     1024    44.53125
+450     1024    43.9453125
+458     1024    44.7265625
+442     1024    43.1640625
+449     1024    43.84765625
+450     1024    43.9453125
+459     1024    44.82421875
+448     1024    43.75
+430     1024    41.9921875
+443     1024    43.26171875
+434     1024    42.3828125
+466     1024    45.5078125
+460     1024    44.921875
+453     1024    44.23828125
+442     1024    43.1640625
+445     1024    43.45703125
+444     1024    43.359375
+479     1024    46.77734375
+458     1024    44.7265625
+427     1024    41.69921875
+458     1024    44.7265625
+461     1024    45.01953125
+450     1024    43.9453125
+476     1024    46.484375
+478     1024    46.6796875
+456     1024    44.53125
+457     1024    44.62890625
+446     1024    43.5546875
+430     1024    41.9921875
+440     1024    42.96875
+434     1024    42.3828125
+421     1024    41.11328125
+463     1024    45.21484375
+456     1024    44.53125
+442     1024    43.1640625
+492     1024    48.046875
+596     1024    58.203125
+670     1024    65.4296875
+742     1024    72.4609375
+762     1024    74.4140625
+792     1024    77.34375
+790     1024    77.1484375
+819     1024    79.98046875
+822     1024    80.2734375
+810     1024    79.1015625
+732     1024    71.484375
+685     1024    66.89453125
+578     1024    56.4453125
+485     1024    47.36328125
+495     1024    48.33984375
+452     1024    44.140625
+437     1024    42.67578125
+472     1024    46.09375
+452     1024    44.140625
+449     1024    43.84765625
+463     1024    45.21484375
+462     1024    45.1171875
+468     1024    45.703125
+436     1024    42.578125
+446     1024    43.5546875
+469     1024    45.80078125
+453     1024    44.23828125
+456     1024    44.53125
+434     1024    42.3828125
+457     1024    44.62890625
+426     1024    41.6015625
+444     1024    43.359375
+447     1024    43.65234375
+454     1024    44.3359375
+466     1024    45.5078125
+438     1024    42.7734375
+414     1024    40.4296875
+438     1024    42.7734375
+453     1024    44.23828125
+452     1024    44.140625
+414     1024    40.4296875
+435     1024    42.48046875
+438     1024    42.7734375
+436     1024    42.578125
+461     1024    45.01953125
+445     1024    43.45703125
+439     1024    42.87109375
+447     1024    43.65234375
+430     1024    41.9921875
+445     1024    43.45703125
+431     1024    42.08984375
+465     1024    45.41015625
+522     1024    50.9765625
+568     1024    55.46875
+556     1024    54.296875
+548     1024    53.515625
+496     1024    48.4375
+464     1024    45.3125
+472     1024    46.09375
+476     1024    46.484375
+447     1024    43.65234375
+450     1024    43.9453125
+462     1024    45.1171875
+464     1024    45.3125
+458     1024    44.7265625
+466     1024    45.5078125
+431     1024    42.08984375
+458     1024    44.7265625
+465     1024    45.41015625
+454     1024    44.3359375
+454     1024    44.3359375
+427     1024    41.69921875
+472     1024    46.09375
+500     1024    48.828125
+511     1024    49.90234375
+501     1024    48.92578125
+518     1024    50.5859375
+557     1024    54.39453125
+556     1024    54.296875
+566     1024    55.2734375
+524     1024    51.171875
+505     1024    49.31640625
+505     1024    49.31640625
+482     1024    47.0703125
+515     1024    50.29296875
+488     1024    47.65625
+473     1024    46.19140625
+483     1024    47.16796875
+520     1024    50.78125
+472     1024    46.09375
+500     1024    48.828125
+538     1024    52.5390625
+524     1024    51.171875
+525     1024    51.26953125
+533     1024    52.05078125
+521     1024    50.87890625
+508     1024    49.609375
+516     1024    50.390625
+489     1024    47.75390625
+480     1024    46.875
+493     1024    48.14453125
+501     1024    48.92578125
+489     1024    47.75390625
+490     1024    47.8515625
+506     1024    49.4140625
+516     1024    50.390625
+518     1024    50.5859375
+505     1024    49.31640625
+492     1024    48.046875
+518     1024    50.5859375
+503     1024    49.12109375
+488     1024    47.65625
+517     1024    50.48828125
+469     1024    45.80078125
+480     1024    46.875
+472     1024    46.09375
+497     1024    48.53515625
+476     1024    46.484375
+478     1024    46.6796875
+500     1024    48.828125
+488     1024    47.65625
+510     1024    49.8046875
+472     1024    46.09375
+483     1024    47.16796875
+503     1024    49.12109375
+521     1024    50.87890625
+509     1024    49.70703125
+514     1024    50.1953125
+504     1024    49.21875
+489     1024    47.75390625
+470     1024    45.8984375
+478     1024    46.6796875
+488     1024    47.65625
+461     1024    45.01953125
+484     1024    47.265625
+488     1024    47.65625
+511     1024    49.90234375
+522     1024    50.9765625
+497     1024    48.53515625
+538     1024    52.5390625
+507     1024    49.51171875
+507     1024    49.51171875
+519     1024    50.68359375
+520     1024    50.78125
+506     1024    49.4140625
+493     1024    48.14453125
+490     1024    47.8515625
+501     1024    48.92578125
+485     1024    47.36328125
+503     1024    49.12109375
+508     1024    49.609375
+504     1024    49.21875
+491     1024    47.94921875
+516     1024    50.390625
+494     1024    48.2421875
+524     1024    51.171875
+520     1024    50.78125
+503     1024    49.12109375
+530     1024    51.7578125
+538     1024    52.5390625
+508     1024    49.609375
+494     1024    48.2421875
+499     1024    48.73046875
+500     1024    48.828125
+485     1024    47.36328125
+497     1024    48.53515625
+475     1024    46.38671875
+505     1024    49.31640625
+485     1024    47.36328125
+496     1024    48.4375
+504     1024    49.21875
+478     1024    46.6796875
+483     1024    47.16796875
+491     1024    47.94921875
+483     1024    47.16796875
+450     1024    43.9453125
+488     1024    47.65625
+469     1024    45.80078125
+456     1024    44.53125
+466     1024    45.5078125
+471     1024    45.99609375
+468     1024    45.703125
+534     1024    52.1484375
+588     1024    57.421875
+578     1024    56.4453125
+571     1024    55.76171875
+516     1024    50.390625
+566     1024    55.2734375
+589     1024    57.51953125
+577     1024    56.34765625
+554     1024    54.1015625
+527     1024    51.46484375
+560     1024    54.6875
+585     1024    57.12890625
+580     1024    56.640625
+540     1024    52.734375
+560     1024    54.6875
+568     1024    55.46875
+574     1024    56.0546875
+537     1024    52.44140625
+531     1024    51.85546875
+527     1024    51.46484375
+567     1024    55.37109375
+569     1024    55.56640625
+529     1024    51.66015625
+493     1024    48.14453125
+549     1024    53.61328125
+594     1024    58.0078125
+557     1024    54.39453125
+549     1024    53.61328125
+587     1024    57.32421875
+581     1024    56.73828125
+651     1024    63.57421875
+739     1024    72.16796875
+661     1024    64.55078125
+655     1024    63.96484375
+617     1024    60.25390625
+605     1024    59.08203125
+516     1024    50.390625
+474     1024    46.2890625
+494     1024    48.2421875
+478     1024    46.6796875
+482     1024    47.0703125
+464     1024    45.3125
+460     1024    44.921875
+492     1024    48.046875
+454     1024    44.3359375
+457     1024    44.62890625
+460     1024    44.921875
+451     1024    44.04296875
+468     1024    45.703125
+479     1024    46.77734375
+480     1024    46.875
+497     1024    48.53515625
+469     1024    45.80078125
+480     1024    46.875
+477     1024    46.58203125
+478     1024    46.6796875
+462     1024    45.1171875
+474     1024    46.2890625
+491     1024    47.94921875
+478     1024    46.6796875
+453     1024    44.23828125
+489     1024    47.75390625
+517     1024    50.48828125
+511     1024    49.90234375
+488     1024    47.65625
+516     1024    50.390625
+613     1024    59.86328125
+693     1024    67.67578125
+729     1024    71.19140625
+750     1024    73.2421875
+737     1024    71.97265625
+803     1024    78.41796875
+819     1024    79.98046875
+821     1024    80.17578125
+832     1024    81.25
+838     1024    81.8359375
+851     1024    83.10546875
+838     1024    81.8359375
+884     1024    86.328125
+877     1024    85.64453125
+900     1024    87.890625
+908     1024    88.671875
+903     1024    88.18359375
+902     1024    88.0859375
+899     1024    87.79296875
+919     1024    89.74609375
+894     1024    87.3046875
+935     1024    91.30859375
+956     1024    93.359375
+956     1024    93.359375
+961     1024    93.84765625
+947     1024    92.48046875
+947     1024    92.48046875
+941     1024    91.89453125
+941     1024    91.89453125
+917     1024    89.55078125
+912     1024    89.0625
+884     1024    86.328125
+937     1024    91.50390625
+938     1024    91.6015625
+953     1024    93.06640625
+939     1024    91.69921875
+963     1024    94.04296875
+975     1024    95.21484375
+980     1024    95.703125
+979     1024    95.60546875
+933     1024    91.11328125
+952     1024    92.96875
+954     1024    93.1640625
+930     1024    90.8203125
+939     1024    91.69921875
+976     1024    95.3125
+963     1024    94.04296875
+902     1024    88.0859375
+835     1024    81.54296875
+810     1024    79.1015625
+820     1024    80.078125
+774     1024    75.5859375
+798     1024    77.9296875
+839     1024    81.93359375
+858     1024    83.7890625
+858     1024    83.7890625
+857     1024    83.69140625
+853     1024    83.30078125
+836     1024    81.640625
+870     1024    84.9609375
+851     1024    83.10546875
+848     1024    82.8125
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{wave2} \PY{o}{=} \PY{n}{spectro}\PY{o}{.}\PY{n}{make\PYZus{}wave}\PY{p}{(}\PY{p}{)}
+\PY{n}{wave2}\PY{o}{.}\PY{n}{make\PYZus{}audio}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<IPython.lib.display.Audio object>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{wave}\PY{o}{.}\PY{n}{make\PYZus{}audio}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<IPython.lib.display.Audio object>
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
